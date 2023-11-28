@@ -46,3 +46,12 @@ func (c *ApiContext) Success() {
 	c.ResponseJson(ApiStatusOK, "OK", gin.H{})
 
 }
+
+type Errcode interface {
+	Code() int
+	Error() string
+}
+
+func (c *ApiContext) ResponseErrorCode(code Errcode) {
+	c.ResponseJson(code.Code(), code.Error(), nil)
+}
