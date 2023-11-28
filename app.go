@@ -58,6 +58,7 @@ func logIdInjector(c *gin.Context) {
 	log.InjectLogID(c)
 }
 
+// RunApp 启动http服务
 func RunApp(cfg *config.Configuration, opts ...AppOpt) {
 	app := NewApp(cfg.App)
 	for _, opt := range opts {
