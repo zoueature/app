@@ -52,14 +52,13 @@ func (c *ApiContext) Success() {
 
 }
 
-type Errcode interface {
-	Code() int
-	Error() string
-}
-
 func (c *ApiContext) ResponseErrorCode(code Errcode) {
 	c.ResponseJson(code.Code(), code.Error(), nil)
 }
+
+// ------------------------------------
+// http rpc 客户端
+// ------------------------------------
 
 type HttpRpcClient struct {
 	Host   string
@@ -101,6 +100,19 @@ func NewHttpRpcRequest(method, uri string, params Encoder) *RpcRequest {
 }
 
 func (cli *HttpRpcClient) HttpRemoteCall(ctx context.Context, req *RpcRequest) (*ApiResponse, error) {
+	content, err := cli.call(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	data := new(ApiResponse)
+	err = json.Unmarshal(content, data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, error) {
 	url := req.URL
 	param := req.Param.Encode()
 
@@ -110,7 +122,7 @@ func (cli *HttpRpcClient) HttpRemoteCall(ctx context.Context, req *RpcRequest) (
 	} else {
 		body = strings.NewReader(param)
 	}
-	request, err := http.NewRequest(req.Method, req.URL, body)
+	request, err := http.NewRequestWithContext(ctx, req.Method, req.URL, body)
 	if err != nil {
 		return nil, err
 	}
@@ -125,10 +137,17 @@ func (cli *HttpRpcClient) HttpRemoteCall(ctx context.Context, req *RpcRequest) (
 	if err != nil {
 		return nil, err
 	}
-	data := new(ApiResponse)
-	err = json.Unmarshal(content, data)
+	return content, nil
+}
+
+func (cli HttpRpcClient) HttpCallWithResp(ctx context.Context, req *RpcRequest, resp interface{}) error {
+	content, err := cli.call(ctx, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return data, nil
+	err = json.Unmarshal(content, resp)
+	if err != nil {
+		return err
+	}
+	return nil
 }

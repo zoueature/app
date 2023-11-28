@@ -1,5 +1,10 @@
 package app
 
+type Errcode interface {
+	Code() int
+	Error() string
+}
+
 type ErrCode int
 
 const (
