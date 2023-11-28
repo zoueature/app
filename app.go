@@ -7,6 +7,7 @@ import (
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 )
 
@@ -31,6 +32,12 @@ type AppOpt func(app *App)
 
 // Run 运行服务
 func (app *App) Run() {
+	pid := os.Getpid()
+	err := os.WriteFile("./pid", []byte(strconv.Itoa(pid)), 0755)
+	if err != nil {
+		panic("write pid fail: " + err.Error())
+	}
+
 	prome := ginprometheus.NewPrometheus("gin")
 	prome.Use(app.engine)
 	go func() error {
