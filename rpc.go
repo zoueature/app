@@ -1,8 +1,13 @@
 package app
 
 import (
+	"context"
+	"encoding/json"
+	"errors"
 	"github.com/gin-gonic/gin"
+	"io"
 	"net/http"
+	"strings"
 )
 
 type ApiResponse struct {
@@ -54,4 +59,76 @@ type Errcode interface {
 
 func (c *ApiContext) ResponseErrorCode(code Errcode) {
 	c.ResponseJson(code.Code(), code.Error(), nil)
+}
+
+type HttpRpcClient struct {
+	Host   string
+	Client http.Client
+}
+
+func NewHttpRpcClient(baseURL string) *HttpRpcClient {
+	return &HttpRpcClient{
+		Host:   baseURL,
+		Client: http.Client{},
+	}
+}
+
+type RpcRequest struct {
+	URL    string
+	Method string
+	Param  Encoder
+}
+
+type Encoder interface {
+	Encode() string
+}
+
+type JsonReq struct {
+	data interface{}
+}
+
+func (j JsonReq) Encode() string {
+	str, _ := json.Marshal(j.data)
+	return string(str)
+}
+
+func NewHttpRpcRequest(method, uri string, params Encoder) *RpcRequest {
+	return &RpcRequest{
+		URL:    uri,
+		Method: method,
+		Param:  params,
+	}
+}
+
+func (cli *HttpRpcClient) HttpRemoteCall(ctx context.Context, req *RpcRequest) (*ApiResponse, error) {
+	url := req.URL
+	param := req.Param.Encode()
+
+	var body io.Reader
+	if req.Method == http.MethodGet {
+		url += "?" + param
+	} else {
+		body = strings.NewReader(param)
+	}
+	request, err := http.NewRequest(req.Method, req.URL, body)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := cli.Client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(resp.Status)
+	}
+	content, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	data := new(ApiResponse)
+	err = json.Unmarshal(content, data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
