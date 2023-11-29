@@ -65,9 +65,18 @@ func logIdInjector(c *gin.Context) {
 	log.InjectLogID(c)
 }
 
+func recoverErr(c *gin.Context) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Error(c, "Sever Panic", err)
+		}
+	}()
+}
+
 // RunApp 启动http服务
 func RunApp(cfg *config.Configuration, opts ...AppOpt) {
 	app := NewApp(cfg.App)
+	app.Engine().Use(logIdInjector, recoverErr)
 	for _, opt := range opts {
 		opt(app)
 	}
@@ -75,6 +84,5 @@ func RunApp(cfg *config.Configuration, opts ...AppOpt) {
 	if err != nil {
 		panic(err)
 	}
-	app.Engine().Use(logIdInjector)
 	app.Run()
 }
