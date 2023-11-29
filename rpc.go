@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/jiebutech/log"
 	"io"
 	"net/http"
 	"strings"
@@ -128,7 +129,7 @@ func (cli *HttpRpcClient) HttpRemoteCall(ctx context.Context, req *RpcRequest) (
 }
 
 func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, error) {
-	url := req.URL
+	url := cli.Host + req.URL
 	param := req.Param.Encode()
 
 	var body io.Reader
@@ -137,6 +138,7 @@ func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, er
 	} else {
 		body = strings.NewReader(param)
 	}
+	log.Debug(ctx, "call rpc ", url, param)
 	request, err := http.NewRequestWithContext(ctx, req.Method, url, body)
 	if err != nil {
 		return nil, err
