@@ -137,7 +137,7 @@ func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, er
 	} else {
 		body = strings.NewReader(param)
 	}
-	request, err := http.NewRequestWithContext(ctx, req.Method, req.URL, body)
+	request, err := http.NewRequestWithContext(ctx, req.Method, url, body)
 	if err != nil {
 		return nil, err
 	}
