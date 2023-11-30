@@ -4,73 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"github.com/jiebutech/log"
 	"io"
 	"net/http"
 	"strings"
 )
-
-type BaseApiResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-type ApiResponse struct {
-	BaseApiResponse
-	Data interface{} `json:"data"`
-}
-
-// ConvertToApiContext 将gin上下文转化为api上下文
-func ConvertToApiContext(c *gin.Context) *ApiContext {
-	return &ApiContext{c}
-}
-
-type ApiContext struct {
-	*gin.Context
-}
-
-const ApiStatusOK = 0
-
-// ResponseJson 响应json数据
-func (c *ApiContext) ResponseJson(code int, msg string, data any) {
-
-	res := &ApiResponse{
-		BaseApiResponse: BaseApiResponse{
-			Code:    code,
-			Message: msg,
-		},
-		Data: gin.H{},
-	}
-	if data != nil {
-		res.Data = data
-	}
-	c.JSON(http.StatusOK, res)
-}
-
-// SuccessData 成功返回并响应对应数据
-func (c *ApiContext) SuccessData(data ...any) {
-	var resp interface{} = gin.H{}
-	if len(data) > 0 && data[0] != nil {
-		resp = data[0]
-	}
-	c.ResponseJson(ApiStatusOK, "OK", resp)
-}
-
-// Success 返回成功
-func (c *ApiContext) Success() {
-	c.ResponseJson(ApiStatusOK, "OK", gin.H{})
-
-}
-
-// ResponseErrorCode 响应错误码
-func (c *ApiContext) ResponseErrorCode(code Errcode, msg ...string) {
-	respMsg := code.Error()
-	if len(msg) > 0 && msg[0] != "" {
-		respMsg = msg[0]
-	}
-	c.ResponseJson(code.Code(), respMsg, nil)
-}
 
 // ------------------------------------------------------
 // http rpc 客户端

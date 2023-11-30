@@ -8,6 +8,7 @@ type Errcode interface {
 type ErrCode int
 
 const (
+	ApiStatusOK   ErrCode = 0
 	ErrBadRequest ErrCode = 400
 	ErrForbidden  ErrCode = 403
 	ErrNotFound   ErrCode = 404
@@ -36,4 +37,5 @@ var msgMap = map[ErrCode]string{
 	ErrForbidden:  "Access Denied",
 	ErrNotFound:   "Not Found",
 	ErrServer:     "Server Error",
+	ApiStatusOK:   "OK",
 }
