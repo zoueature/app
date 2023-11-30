@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"net/http"
 )
 
@@ -22,6 +23,24 @@ func ConvertToApiContext(c *gin.Context) *ApiContext {
 
 type ApiContext struct {
 	*gin.Context
+}
+
+const UserIDKeyInContext = "user_id"
+
+func (c *ApiContext) AuthUserID() int {
+	v, ok := c.Get(UserIDKeyInContext)
+	if !ok {
+		return 0
+	}
+	return cast.ToInt(v)
+}
+
+func (c *ApiContext) MustGetAuthUserID() int {
+	v, ok := c.Get(UserIDKeyInContext)
+	if !ok {
+		panic("auth user id is empty")
+	}
+	return cast.ToInt(v)
 }
 
 // ResponseJson 响应json数据
