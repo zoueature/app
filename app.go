@@ -2,9 +2,9 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jiebutech/config"
-	"github.com/jiebutech/log"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
+	"gitlab.jiebu.com/base/config"
+	"gitlab.jiebu.com/base/log"
 	"os"
 	"os/signal"
 	"strconv"

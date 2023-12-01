@@ -1,12 +1,13 @@
-module github.com/jiebutech/app
+module gitlab.jiebu.com/base/app
 
 go 1.21.4
 
 require (
 	github.com/gin-gonic/gin v1.9.1
-	github.com/jiebutech/config v0.0.1
-	github.com/jiebutech/log v0.0.2
+	github.com/spf13/cast v1.6.0
 	github.com/zsais/go-gin-prometheus v0.1.0
+	gitlab.jiebu.com/base/config v0.0.1
+	gitlab.jiebu.com/base/log v0.0.1
 )
 
 require (
@@ -35,13 +36,12 @@ require (
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.11.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/spf13/cast v1.5.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/jiebutech/log"
+	"gitlab.jiebu.com/base/log"
 	"io"
 	"net/http"
 	"strings"
