@@ -35,6 +35,10 @@ func (c *ApiContext) AuthUserID() int {
 	return cast.ToInt(v)
 }
 
+func (c *ApiContext) RequestURI() string {
+	return c.Request.RequestURI
+}
+
 func (c *ApiContext) MustGetAuthUserID() int {
 	v, ok := c.Get(UserIDKeyInContext)
 	if !ok {

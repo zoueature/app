@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"gitlab.jiebu.com/base/log"
+	"go.uber.org/zap"
 	"io"
 	"net/http"
 	"strings"
@@ -76,7 +77,7 @@ func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, er
 	} else {
 		body = strings.NewReader(param)
 	}
-	log.Debug(ctx, "call rpc ", url, param)
+	log.Debug(ctx, "call rpc ", zap.String("url", url), zap.Any("params", param))
 	request, err := http.NewRequestWithContext(ctx, req.Method, url, body)
 	if err != nil {
 		return nil, err
