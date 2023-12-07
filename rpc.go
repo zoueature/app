@@ -37,11 +37,15 @@ type Encoder interface {
 	Encode() string
 }
 
-type JsonReq struct {
+func NewJsonEncoder(data interface{}) Encoder {
+	return jsonReq{data: data}
+}
+
+type jsonReq struct {
 	data interface{}
 }
 
-func (j JsonReq) Encode() string {
+func (j jsonReq) Encode() string {
 	str, _ := json.Marshal(j.data)
 	return string(str)
 }
