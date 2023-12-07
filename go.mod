@@ -6,8 +6,8 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/cast v1.6.0
 	github.com/zsais/go-gin-prometheus v0.1.0
-	gitlab.jiebu.com/base/config v0.0.3
-	gitlab.jiebu.com/base/log v0.0.2
+	gitlab.jiebu.com/base/config v0.0.5
+	gitlab.jiebu.com/base/log v0.0.3
 )
 
 require (

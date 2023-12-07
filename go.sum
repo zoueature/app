@@ -122,10 +122,14 @@ gitlab.jiebu.com/base/config v0.0.1 h1:5Q5g1K6dcNqtgrtqKlnqNpLhiB1rHu3lGF/g5GTEI
 gitlab.jiebu.com/base/config v0.0.1/go.mod h1:cDXmT1SjvDByvvUcy0kkeyQKj7SQ9VxX51jiJ/zjG+A=
 gitlab.jiebu.com/base/config v0.0.3 h1:WZ7wfCex6QS1lkGXaTYyABg1l0/3XUbUQMoYpXi9jlQ=
 gitlab.jiebu.com/base/config v0.0.3/go.mod h1:cDXmT1SjvDByvvUcy0kkeyQKj7SQ9VxX51jiJ/zjG+A=
+gitlab.jiebu.com/base/config v0.0.5 h1:l6fYVoVfXh6W4qs8Sngzipxbxv5bGm9RT6YsG9pQjso=
+gitlab.jiebu.com/base/config v0.0.5/go.mod h1:cDXmT1SjvDByvvUcy0kkeyQKj7SQ9VxX51jiJ/zjG+A=
 gitlab.jiebu.com/base/log v0.0.1 h1:O1auIMBtnJq5j7TCExCirJF2DaSWkGQQjRqGS22LTLU=
 gitlab.jiebu.com/base/log v0.0.1/go.mod h1:v7XaD5/i++yjUCOpZmJAmEokwDZn38mtnqwlXRqcPZI=
 gitlab.jiebu.com/base/log v0.0.2 h1:6EW1+jYkJmZNFnT9jCVD360Ik0SRSG/Y+85gINubMfw=
 gitlab.jiebu.com/base/log v0.0.2/go.mod h1:ehgWTDxL8U06ynJmRSHoiqeQIsR8V0PsFKmGEBy/QkQ=
+gitlab.jiebu.com/base/log v0.0.3 h1:t1q9G9+n7tW+XjktQm+SgIM/gk8cpC330dE5qcpTXB0=
+gitlab.jiebu.com/base/log v0.0.3/go.mod h1:pB3TxitZKJ+n7OXaCla/Uw0uCMQqQxy5X014gcvecx0=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=
 go.uber.org/multierr v1.11.0/go.mod h1:20+QtiLqy0Nd6FdQB9TLXag12DsQkrbs3htMFfDN80Y=
 go.uber.org/zap v1.26.0 h1:sI7k6L95XOKS281NhVKOFCUNIvv9e0w4BF8N3u+tCRo=
