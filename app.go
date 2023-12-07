@@ -78,10 +78,6 @@ func (app *App) WithOpt(opts ...AppOpt) *App {
 	return app
 }
 
-func logIdInjector(c *gin.Context) {
-	log.InjectLogID(c)
-}
-
 type OpFunc func(app *appRunConf)
 
 func (f OpFunc) apply(app *appRunConf) {
@@ -137,7 +133,7 @@ func RunApp(cfg *config.Configuration, opts ...Conf) {
 	for _, opt := range opts {
 		opt.apply(app.runConf)
 	}
-	app.Engine().Use(logIdInjector)
+	app.Engine().Use(logIdInjector, corsMiddleware())
 	if app.runConf.beforeRouteRegister != nil {
 		// 路由注册前回调
 		app.runConf.beforeRouteRegister()
