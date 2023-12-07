@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gitlab.jiebu.com/base/log"
+	"github.com/zoueature/log"
 	"net/http"
 )
 

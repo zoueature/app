@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"gitlab.jiebu.com/base/log"
+	"github.com/zoueature/log"
 	"go.uber.org/zap"
 	"io"
 	"net/http"
