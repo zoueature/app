@@ -6,8 +6,8 @@ require (
 	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/cast v1.6.0
-	github.com/zoueature/config v0.0.3
-	github.com/zoueature/log v0.0.2
+	github.com/zoueature/config v0.0.4
+	github.com/zoueature/log v0.0.3
 	github.com/zsais/go-gin-prometheus v0.1.0
 	go.uber.org/zap v1.26.0
 )
