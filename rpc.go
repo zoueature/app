@@ -86,6 +86,9 @@ func (cli *HttpRpcClient) call(ctx context.Context, req *RpcRequest) ([]byte, er
 	if err != nil {
 		return nil, err
 	}
+	if req.Method != http.MethodGet {
+		request.Header.Add("Content-Type", "application/json")
+	}
 	resp, err := cli.Client.Do(request)
 	if err != nil {
 		return nil, err
