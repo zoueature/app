@@ -61,7 +61,7 @@ func (app *App) Run() {
 		panic(err)
 	}
 	serverNum := 0
-	if app.runConf.routeRegister == nil {
+	if app.runConf.routeRegister != nil {
 		// 启动http服务
 		if app.cfg.Listen == "" {
 			panic("http listener is empty")
