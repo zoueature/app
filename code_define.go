@@ -5,6 +5,26 @@ type Errcode interface {
 	Error() string
 }
 
+type StructErrCode struct {
+	C   int
+	Msg string
+}
+
+func (s StructErrCode) Code() int {
+	return s.C
+}
+
+func (s StructErrCode) Error() string {
+	return s.Msg
+}
+
+func SErrCode(code int, msg string) Errcode {
+	return StructErrCode{
+		C:   code,
+		Msg: msg,
+	}
+}
+
 type ErrCode int
 
 const (
