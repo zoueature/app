@@ -3,8 +3,11 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zoueature/config"
+	"github.com/zoueature/grpc"
 	"github.com/zoueature/log"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
+	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
@@ -16,6 +19,7 @@ type appRunConf struct {
 	beforeServe         func()
 	afterRouteRegister  func()
 	beforeShutDown      func()
+	registerRpcService  grpc.RegisterSvc
 	routeRegister       func(c *gin.Engine)
 }
 type App struct {
@@ -52,10 +56,44 @@ func (app *App) Run() {
 	if app.runConf.beforeServe != nil {
 		app.runConf.beforeServe()
 	}
-	go func() error {
-		println("EA App had start up ..........")
-		return app.engine.Run(app.cfg.Listen)
-	}()
+	listener, err := net.Listen("tcp", app.cfg.Listen)
+	if err != nil {
+		panic(err)
+	}
+	serverNum := 0
+	if app.runConf.routeRegister == nil {
+		// 启动http服务
+		if app.cfg.Listen == "" {
+			panic("http listener is empty")
+		}
+		go func() {
+			println("EA http server starting up ..........")
+			err := http.Serve(listener, app.engine)
+			if err != nil {
+				println(err.Error())
+			}
+		}()
+		serverNum++
+	}
+	if app.runConf.registerRpcService != nil {
+		// 启动grpc 服务
+		if app.cfg.GrpcListen == "" {
+			panic("rpc listener is empty")
+		}
+		go func() {
+			println("EA grpc server starting up ..........")
+			server := grpc.NewServer(app.cfg)
+			err := server.Serve(app.runConf.registerRpcService)
+			if err != nil {
+				println(err.Error())
+			}
+		}()
+		serverNum++
+	}
+	if serverNum == 0 {
+		println("No server to run, exit ")
+		return
+	}
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGKILL, syscall.SIGTERM)
 	<-ch
@@ -113,6 +151,13 @@ func AfterRegister(f func()) Conf {
 func BeforeShutdown(f func()) Conf {
 	return OpFunc(func(app *appRunConf) {
 		app.beforeShutDown = f
+	})
+}
+
+// RegisterRpcService 注册grpc service
+func RegisterRpcService(svc grpc.RegisterSvc) Conf {
+	return OpFunc(func(app *appRunConf) {
+		app.registerRpcService = svc
 	})
 }
 
