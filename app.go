@@ -51,24 +51,24 @@ func (app *App) Run() {
 		panic("write pid fail: " + err.Error())
 	}
 
-	prome := ginprometheus.NewPrometheus("gin")
-	prome.Use(app.engine)
-	if app.runConf.beforeServe != nil {
-		app.runConf.beforeServe()
-	}
-	listener, err := net.Listen("tcp", app.cfg.Listen)
-	if err != nil {
-		panic(err)
-	}
 	serverNum := 0
 	if app.runConf.routeRegister != nil {
 		// 启动http服务
 		if app.cfg.Listen == "" {
 			panic("http listener is empty")
 		}
+		prome := ginprometheus.NewPrometheus("ea-app")
+		prome.Use(app.engine)
+		if app.runConf.beforeServe != nil {
+			app.runConf.beforeServe()
+		}
 		go func() {
-			println("EA http server starting up ..........")
-			err := http.Serve(listener, app.engine)
+			listener, err := net.Listen("tcp", app.cfg.Listen)
+			if err != nil {
+				panic(err)
+			}
+			println("EA http(" + app.cfg.Listen + ") server starting up ..........")
+			err = http.Serve(listener, app.engine)
 			if err != nil {
 				println(err.Error())
 			}
@@ -81,7 +81,7 @@ func (app *App) Run() {
 			panic("rpc listener is empty")
 		}
 		go func() {
-			println("EA grpc server starting up ..........")
+			println("EA grpc(" + app.cfg.GrpcListen + ") server starting up ..........")
 			server := grpc.NewServer(app.cfg)
 			err := server.Serve(app.runConf.registerRpcService)
 			if err != nil {
