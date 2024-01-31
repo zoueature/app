@@ -19,6 +19,7 @@ type appRunConf struct {
 	beforeServe         func()
 	afterRouteRegister  func()
 	beforeShutDown      func()
+	daemonService       func()
 	registerRpcService  grpc.RegisterSvc
 	routeRegister       func(c *gin.Engine)
 }
@@ -90,6 +91,13 @@ func (app *App) Run() {
 		}()
 		serverNum++
 	}
+	if app.runConf.daemonService != nil {
+		go func() {
+			println("EA daemon service starting up ..........")
+			app.runConf.daemonService()
+		}()
+		serverNum++
+	}
 	if serverNum == 0 {
 		println("No server to run, exit ")
 		return
@@ -158,6 +166,13 @@ func BeforeShutdown(f func()) Conf {
 func RegisterRpcService(svc grpc.RegisterSvc) Conf {
 	return OpFunc(func(app *appRunConf) {
 		app.registerRpcService = svc
+	})
+}
+
+// RegisterDaemon 注册damon service
+func RegisterDaemon(f func()) Conf {
+	return OpFunc(func(app *appRunConf) {
+		app.daemonService = f
 	})
 }
 
