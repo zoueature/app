@@ -29,6 +29,10 @@ type App struct {
 	runConf *appRunConf
 }
 
+type ApiController interface {
+	RegisterRoute(eng *gin.Engine)
+}
+
 // NewApp 实例化app对象
 func NewApp(cfg *config.AppConfig) *App {
 	if !cfg.Debug {
