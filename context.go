@@ -27,24 +27,24 @@ type ApiContext struct {
 
 const UserIDKeyInContext = "user_id"
 
-func (c *ApiContext) AuthUserID() int {
+func (c *ApiContext) AuthUserID() int64 {
 	v, ok := c.Get(UserIDKeyInContext)
 	if !ok {
 		return 0
 	}
-	return cast.ToInt(v)
+	return cast.ToInt64(v)
 }
 
 func (c *ApiContext) RequestURI() string {
 	return c.Request.RequestURI
 }
 
-func (c *ApiContext) MustGetAuthUserID() int {
+func (c *ApiContext) MustGetAuthUserID() int64 {
 	v, ok := c.Get(UserIDKeyInContext)
 	if !ok {
 		panic("auth user id is empty")
 	}
-	return cast.ToInt(v)
+	return cast.ToInt64(v)
 }
 
 // ResponseJson 响应json数据
