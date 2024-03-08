@@ -25,10 +25,14 @@ type ApiContext struct {
 	*gin.Context
 }
 
-const UserIDKeyInContext = "user_id"
+const userIDKeyInContext = "user_id"
+
+func (c *ApiContext) SetUserID(userId int64) {
+	c.Set(userIDKeyInContext, userId)
+}
 
 func (c *ApiContext) AuthUserID() int64 {
-	v, ok := c.Get(UserIDKeyInContext)
+	v, ok := c.Get(userIDKeyInContext)
 	if !ok {
 		return 0
 	}
@@ -40,7 +44,7 @@ func (c *ApiContext) RequestURI() string {
 }
 
 func (c *ApiContext) MustGetAuthUserID() int64 {
-	v, ok := c.Get(UserIDKeyInContext)
+	v, ok := c.Get(userIDKeyInContext)
 	if !ok {
 		panic("auth user id is empty")
 	}
