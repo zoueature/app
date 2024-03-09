@@ -30,7 +30,7 @@ type App struct {
 }
 
 type ApiController interface {
-	RegisterRoute(eng *gin.Engine)
+	RegisterRoute(eng *gin.IRouter)
 }
 
 // NewApp 实例化app对象
