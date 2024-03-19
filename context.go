@@ -4,11 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"net/http"
+	"time"
 )
 
 type BaseApiResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code      int    `json:"code"`
+	Timestamp int64  `json:"timestamp"`
+	Message   string `json:"message"`
 }
 
 type ApiResponse struct {
@@ -56,8 +58,9 @@ func (c *ApiContext) ResponseJson(code int, msg string, data any) {
 
 	res := &ApiResponse{
 		BaseApiResponse: BaseApiResponse{
-			Code:    code,
-			Message: msg,
+			Code:      code,
+			Message:   msg,
+			Timestamp: time.Now().Unix(),
 		},
 		Data: gin.H{},
 	}
